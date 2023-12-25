@@ -156,11 +156,10 @@ root@fedoraserver master]# chown named: /var/named/log
 
 ```
 # LOG START
+
 Buraya yapıştırınız.
 
 # LOG END
-
-
 ```
 
 Named Servisini yeniden başlatıyoruz:
