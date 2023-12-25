@@ -237,7 +237,7 @@ touch /var/named/zones/forward-sirket.local
 touch /var/named/zones/reverse-sirket.local
 ```
 
-Gerekli şeyleri oluşturduktan sonra  `forward-sirket.local` dosyasını açıp gerekli yapılandırmaları yapıyoruz:
+Gerekli dosyaları ve klasörleri oluşturduktan sonra  `forward-sirket.local` dosyasını açıp gerekli yapılandırmaları yapıyoruz:
 
 ```
 $ORIGIN sirket.local.
@@ -255,7 +255,7 @@ $TTL 12h
 ns1             IN       A    172.16.1.20
 fedora          IN       A    172.16.1.20
                 IN       MX 10 smtp.sirket.local. # Oluşturmak zorunda değilsiniz.
-                IN       TXT  "v=spf1 mx -all" # Oluşturmak zorunda değilsiniz
+                IN       TXT  "v=spf1 mx -all" # Oluşturmak zorunda değilsiniz.
 
 ;;;OTHER RRs;;;
 
