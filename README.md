@@ -1,4 +1,4 @@
-# Fedora-DNS-Server
+![İsimsiz video ‐ Clipchamp ile yapıldı](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/6a0367b8-3817-4940-adad-c65502de69be)# Fedora-DNS-Server
 
 Fedorada DNS server kurulumu, sistem yöneticileri için önemli bir adımdır. Bu adım, DNS (Domain Name System) üzerinden alan adlarını IP adreslerine çözümleyen ve internet üzerindeki iletişimi kolaylaştıran bir hizmeti sağlar. Bu yazıda, Fedora üzerinde DNS server kurulumu ve yapılandırması için kullanılan Bind (Berkeley Internet Name Domain) hizmeti ele alınacaktır.
 
@@ -154,7 +154,7 @@ root@fedoraserver master]# chown named: /var/named/log
 
 Şimdi `Sample Logging Configuration` kısmındaki tüm Configleri kopyalıyoruz ve `nano /etc/named.conf` kısmına yapıştırıyoruz
 
-![İsimsiz video ‐ Clipchamp ile yapıldı](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/34a143dd-a69e-4624-a003-1fc480886ea3)
+![İsimsiz video ‐ Clipchamp ile yapıldı](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/71cad422-f4a7-4156-a9b7-fe7ab53702c6)
 
 
 Named Servisini yeniden başlatıyoruz:
