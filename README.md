@@ -240,7 +240,7 @@ touch /var/named/zones/reverse-sirket.local
 Gerekli şeyleri oluşturduktan sonra  `forward-sirket.local` dosyasını açıp gerekli yapılandırmaları yapıyoruz:
 
 ```
-  GNU nano 7.2                        /var/named/zones/forward-sirket.local                        Modified  $ORIGIN sirket.local.
+$ORIGIN sirket.local.
 $TTL 12h
 
 @               IN      SOA  fedora.sirket.local.  info.sirket.local. (
