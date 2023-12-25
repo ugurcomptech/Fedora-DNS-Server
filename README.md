@@ -1,4 +1,4 @@
-Fedora DNS Server
+# Fedora DNS Server
 
 Fedorada DNS server kurulumu, sistem yöneticileri için önemli bir adımdır. Bu adım, DNS (Domain Name System) üzerinden alan adlarını IP adreslerine çözümleyen ve internet üzerindeki iletişimi kolaylaştıran bir hizmeti sağlar. Bu yazıda, Fedora üzerinde DNS server kurulumu ve yapılandırması için kullanılan Bind (Berkeley Internet Name Domain) hizmeti ele alınacaktır.
 
