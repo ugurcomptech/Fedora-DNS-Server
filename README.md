@@ -259,8 +259,8 @@ fedora          IN       A    172.16.1.20
 
 ;;;OTHER RRs;;;
 
-debian          IN       A      172.16.1.155
-www             IN       CNAME  fedora
+windows          IN       A      172.16.1.155
+www              IN       CNAME  fedora
 ```
 
 
