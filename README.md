@@ -129,7 +129,77 @@ DNS Serverımız başarılı bir şekilde çalıştı.
 
 ## LOG
 
-Şimdi LOG işlemlerini halledelim bunun için BIND'ın dokumanına gideceğiz [Tıklayarak gidebilirsiniz](https://kb.isc.org/docs/aa-01526)
+Şimdi LOG işlemlerini halledelim bunun için BIND'ın dokumanına gideceğiz. [ Buraya tıklayarak](https://kb.isc.org/docs/aa-01526) gidebilirsiniz.
+
+`Sample Logging Configuration` kısmına gelip bir tanesini beraber inceliyoruz.
+
+```
+logging {
+     channel default_log {
+          file "/var/named/log/default" versions 3 size 20m; # /var/named/log diye bir dosya yolu oluşturacağız ve gerekli yetkileri vereceğiz.
+          print-time yes;
+          print-category yes;
+          print-severity yes;
+          severity info;
+     };
+```
+
+Aşağıdaki komutu yazarak gerekli klasörü oluşturuyoruz ve yetkileri veriyoruz:
+
+```
+root@fedoraserver master]# mkdir -p /var/named/log
+root@fedoraserver master]# chown named: /var/named/log
+```
+
+
+Şimdi `Sample Logging Configuration` kısmındaki tüm Configleri kopyalıyoruz ve `nano /etc/named.conf` kısmına yapıştırıyoruz
+
+![İsimsiz video ‐ Clipchamp ile yapıldı](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/34a143dd-a69e-4624-a003-1fc480886ea3)
+
+
+Named Servisini yeniden başlatıyoruz:
+
+```
+systemctl restart named
+```
+
+
+Log dosyalarımızın geldiğini görüyoruz şimdi test edelim
+
+```
+[root@fedoraserver master]# ls -l /var/named/log
+total 68
+-rw-r--r--. 1 named named 45958 Dec 25 13:47 auth_servers
+-rw-r--r--. 1 named named     0 Dec 25 13:25 client_security
+-rw-r--r--. 1 named named     0 Dec 25 13:25 ddns
+-rw-r--r--. 1 named named  1116 Dec 25 13:25 default
+-rw-r--r--. 1 named named   122 Dec 25 13:25 dnssec
+-rw-r--r--. 1 named named     0 Dec 25 13:25 dnstap
+-rw-r--r--. 1 named named 10451 Dec 25 13:47 queries
+-rw-r--r--. 1 named named     0 Dec 25 13:25 query-errors
+-rw-r--r--. 1 named named     0 Dec 25 13:25 rate_limiting
+-rw-r--r--. 1 named named     0 Dec 25 13:25 rpz
+-rw-r--r--. 1 named named     0 Dec 25 13:25 zone_transfers
+[root@fedoraserver master]#
+```
+
+
+
+Sanal Makinamızdan Ping atalım veya tarayıcıdan youtube.com adresine gidelim. Ben youtube.com adresini test edicem:
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/b0a635c5-76e4-4d0a-a92a-bfcc3c7ac750)
+
+
+
+Terminale/konsola aşağıdaki komutu yazarak anlık olarak logları izleyebilirsiniz:
+
+```
+tail -f /var/named/log/queries
+```
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/40d82b1d-26a9-4b69-ac1a-4b5933c45082)
+
+Log işlemi başarıyla tamamlandı.
 
 
 
