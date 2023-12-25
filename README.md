@@ -207,10 +207,61 @@ tail -f /var/named/log/queries
 Log işlemi başarıyla tamamlandı.
 
 
+## Forward ve Reverse Lookup Zone Oluşturma
 
+`nano /etc/named.conf` dosya yoluna giderek gerekli zone tanımlarını yapalım:
 
+```
+# ZONES
+zone "sirket.local" IN {
+        type master;
+        file "var/named/zones/forward-sirket.local"; # Tanımlanacak dosya
+        allow-update { none; };
+};
 
+zone "1.16.172.in-addr-arpa" IN { # Reverse DNS
+        type master;
+        file "var/named/zones/reverse-sirket.local"; # Tanımlanacak dosya
+        allow-update { none; };
+};
+# ZONES END
+```
 
+**NOT:** Aslında ilk önce gerekli dosyaları oluşturmamız ve gerekli tanımları yapmamız daha iyi olur fakat mantığını kavrayın diye sırayla gidiyoruz.
+
+Şimdi gerekli dosyaları ve klasörleri oluşturalım oluşturalım:
+
+```
+mkdir -p /var/named/zones
+touch /var/named/zones/forward-sirket.local
+touch /var/named/zones/reverse-sirket.local
+```
+
+Gerekli şeyleri oluşturduktan sonra  `forward-sirket.local` dosyasını açıp gerekli yapılandırmaları yapıyoruz:
+
+```
+  GNU nano 7.2                        /var/named/zones/forward-sirket.local                        Modified  $ORIGIN sirket.local.
+$TTL 12h
+
+@               IN      SOA  fedora.sirket.local.  info.sirket.local. (
+                             1000         ;Serial
+                             1h           ;Refresh
+                             30m          ;Retry
+                             72h          ;Expire
+                             6h           ;Minimum TTL
+                               )
+
+                IN       NS   ns1.sirket.local.
+ns1             IN       A    172.16.1.20
+fedora          IN       A    172.16.1.20
+                IN       MX 10 smtp.sirket.local. # Oluşturmak zorunda değilsiniz.
+                IN       TXT  "v=spf1 mx -all" # Oluşturmak zorunda değilsiniz
+
+;;;OTHER RRs;;;
+
+debian          IN       A      172.16.1.155
+www             IN       CNAME  fedora
+```
 
 
 
