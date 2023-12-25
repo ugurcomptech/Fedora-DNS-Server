@@ -129,7 +129,7 @@ DNS Serverımız başarılı bir şekilde çalıştı.
 
 ## LOG
 
-Şimdi LOG işlemlerini halledelim bunun için BIND'ın dokumanına gideceğiz ![Tıklayarak gidebilirsiniz](https://kb.isc.org/docs/aa-01526)
+Şimdi LOG işlemlerini halledelim bunun için BIND'ın dokumanına gideceğiz [Tıklayarak gidebilirsiniz](https://kb.isc.org/docs/aa-01526)
 
 
 
