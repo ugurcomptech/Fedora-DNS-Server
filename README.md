@@ -219,7 +219,7 @@ zone "sirket.local" IN {
         allow-update { none; };
 };
 
-zone "1.16.172.in-addr-arpa" IN { # Reverse DNS
+zone "1.16.172.in-addr.arpa" IN { # Reverse DNS
         type master;
         file "var/named/zones/reverse-sirket.local"; # Tanımlanacak dosya
         allow-update { none; };
@@ -254,14 +254,63 @@ $TTL 12h
                 IN       NS   ns1.sirket.local.
 ns1             IN       A    172.16.1.20
 fedora          IN       A    172.16.1.20
-                IN       MX 10 smtp.sirket.local. # Oluşturmak zorunda değilsiniz.
-                IN       TXT  "v=spf1 mx -all" # Oluşturmak zorunda değilsiniz.
+
 
 ;;;OTHER RRs;;;
 
 windows          IN       A      172.16.1.155
 www              IN       CNAME  fedora
 ```
+Aşağıdaki komutu yazarak check edebiliriz:
+```
+named-checkzone sirket.local /var/named/zones/forward-sirket.local
+```
+
+Şimdi Reverse zone'nin dosyasına gerekli yapılandırmaları yapalım:
+
+```
+$ORIGIN 1.16.172.in-addr-arpa.
+$TTL 12h
+
+@               IN              SOA     fedora.sirket.local     info.sirket.local. (
+                                        1000                    ;Serial
+                                        1h                      ;Refresh
+                                        30m                     ;Retry
+                                        72h                     ;Expire
+                                        6h                      ;Minimum TTL
+                                )
+
+                IN              NS      ns1.sirket.local.
+ns1             IN              A       172.16.1.20
+fedora          IN              A       172.16.1.20
+
+;;; OTHER RRs ;;;
+
+20              IN              PTR     fedora.sirket.local.
+155             IN              PTR     windows.sirket.local.
+```
+
+Aşağıdaki komutu yazarak check edebiliriz:
+
+```
+named-checkzone 1.16.172.in-addr.arpa /var/named/zones/reverse-sirket.local
+```
+
+
+servisi yeniden başlatıyoruz:
+
+
+```
+systemctl restart named
+```
+
+Eğer bir hata çıkmadıysa devam ediyoruz.
+
+Windows Makinamızda  `nslookup fedora.sirket.local` komutunu çalıştırıyoruz:
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/d3372858-06ed-444b-8664-ad6dda0bc820)
+
+DNS kaydını çözdüğünü görüyoruz.
 
 
 
