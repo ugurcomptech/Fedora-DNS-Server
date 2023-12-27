@@ -404,7 +404,145 @@ drwxrwx---. 2 named named      6 Nov 16 03:00 slaves
 drwxr-xr-x. 2 named named    103 Dec 26 01:03 zones
 ```
 
-Key ve link hazırlıklarımız bitti şimdi devam edelim.
+Key ve link hazırlıklarımız bitti devam edelim.
+
+Keyimizi `named.conf` dosyasına tanımlayalım:
+
+```
+zone "." IN {
+        type hint;
+        file "named.ca";
+};
+
+zone "sirket.local" IN {
+        type master;
+        file "/var/named/zones/forward-sirket.local";
+        allow-update { key "rndc-key"; }; # keyimizin ismini yazıyoruz
+};
+
+zone "1.16.172.in-addr.arpa" IN {
+        type master;
+        file "/var/named/zones/reverse-sirket.local";
+        allow-update { key "rndc-key" ;}; # keyimizin ismini yazıyoruz
+};
+
+
+
+include "/etc/rndc.key"; # dosya yolunu belirliyoruz.
+```
+
+DHCP de DDNS Config yapacağız. `nano /etc/dhcp/dhcpd.conf` dosya yoluna giderek gerekli yapılandırmaları yapalım:
+
+```
+# DDNS Update ayarları
+ddns-updates on;                      # DDNS güncelleme özelliği aktif
+ddns-update-style standard;           # DDNS güncelleme stili standard
+ddns-domainname "sirket.local.";      # DDNS etki alanı adı
+ddns-rev-domainname "in-addr.arpa.";  # DDNS ters etki alanı adı
+update-static-leases on;               # Statik IP adreslerini güncelleme
+update-conflict-detection off;         # Güncelleme çakışmalarını kontrol etmeyi kapat
+
+# rndc-key konfigürasyonu
+key "rndc-key" {
+    algorithm hmac-sha256;             # Kullanılan algoritma
+    secret "9IIRaGTKvAsfrjPhV3Li7iGfNLiYbE5HgJJlht7Wl8KxXJCWjf98f7AJ7GtqzpkuoRpPZu+pqxSlvdhfr3AIqA==";  # HMAC anahtarı
+};
+
+# sirket.local etki alanı konfigürasyonu
+zone sirket.local. {
+    primary 172.16.1.20;                # DDNS güncelleme için başlangıç sunucusu
+    key "rndc-key";                     # Kullanılan rndc anahtarı
+}
+
+# Ters etki alanı konfigürasyonu
+zone 1.16.172.in-addr.arpa. {
+    primary 172.16.1.20;                # DDNS güncelleme için başlangıç sunucusu
+    key "rndc-key";                     # Kullanılan rndc anahtarı
+}
+
+# rndc.key dosyasını dahil et
+include "/etc/rndc.key";
+```
+
+### DDNS Update Sürecinin Takibi
+
+
+Yaptığımız işlemlerden sonra servislerimizi restart edelim
+
+```
+systemctl restart dhcpd
+```
+```
+systemctl restart named
+```
+
+Eğer bir hata almadıysanız devam edelim.
+
+
+3 Farklı Terminal açarak bu işlemi daha rahat yapabilirsiniz.
+
+
+1. Terminalde `/var/log/dhcp.log` dosyasına bakacağız:
+
+```
+tail -f /var/log/dhcp.log
+```
+
+2. Terminalde `DDNS` loglarına bakacağız:
+
+
+```
+tail -f /var/named/log/ddns -n 30 # Şuanlık 30 tane bizim için yeterlidir
+```
+
+Şimdi yeni bir `client` ortama sokalım. Eski kullanmış olduğumuz Windows Sanal Makinasından Clone oluşturarak bunu sağlayabilirsiniz. 
+
+Loglarda oluşturmuş olduğumuz bilgisayarın IP adresini görebiliyoruz.
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/4135e4b9-3e14-401c-b495-deac8e6b122f)
+
+
+Bu işlemden sonra `ls -l /var/named/zones/` komutunu yazarak oluşmuş olan **.jnl** uzantılı dosyaları görebilirsiniz. İçeriği bizim okuyabileceğimiz bir türden değil.
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/90ce29a6-b4df-494d-ab99-1536385a9cc3)
+
+
+Terminale `rndc sync -clean` komutunu yazarak güncelleyelim.
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/635be424-02a1-4f69-bf63-f50f6174e050)
+
+
+Gördüğünüz gibi hiçbir kayıt girmeden otomatik bir şekilde gelmiş bulunmaktadır.
+
+
+Şimdi şöyle bir test yapalım. DHCP Serverda bu bilgisayara özel bir IP adresi tanımlayalım ve bakalım onu tanımlayacak mı?
+
+**Rezervasyon işlemi:**
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/c4a51f65-a365-453b-9854-8a755326e04d)
+
+
+`systemctl restart dhcpd ` komutunu yazarak DHCP servisini yeniden başlatalım.
+
+Windows bilgisayarımızda `ipconfig /release` ve `ipconfig /renew` komutlarını sırasıyla yazalım.
+
+
+Bilgisayarımız `172.16.1.159` IP adresini almış bulunmakta.
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/d5020b45-f13c-4f0f-a08f-4b34e7eb2092)
+
+
+Servera dönüp tekrardan `rndc sync -clean` komutunu yazınız ve ardından `nano /var/named/zones/forward-sirket.local` dosyasını açınız.
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/1b14f6af-a69e-44ef-80be-ad301aec5315)
+
+
+
+İşlemlerimiz başarıyla tamamlandı.
+
+
+
+
 
 
 
