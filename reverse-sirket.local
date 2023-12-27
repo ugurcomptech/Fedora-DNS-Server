@@ -1,0 +1,18 @@
+$ORIGIN .
+$TTL 43200      ; 12 hours
+1.16.172.in-addr.arpa   IN SOA  fedora.sirket.local.1.16.172.in-addr.arpa. info.sirket.local. (
+                                1004       ; serial
+                                3600       ; refresh (1 hour)
+                                1800       ; retry (30 minutes)
+                                259200     ; expire (3 days)
+                                21600      ; minimum (6 hours)
+                                )
+                        NS      ns1.sirket.local.
+$ORIGIN 1.16.172.in-addr.arpa.
+$TTL 300        ; 5 minutes
+155                     PTR     windows.sirket.local.
+159                     PTR     DESKTOP-VN7AMBD.sirket.local.
+$TTL 43200      ; 12 hours
+20                      PTR     fedora.sirket.local
+fedora                  A       172.16.1.20
+ns1                     A       172.16.1.20
