@@ -1,0 +1,1 @@
+Yüklenmiş olunan dosyaların tamamı DDNS ile uygun çalışacak bir şekilde yapılandırılmıştır.
