@@ -1,0 +1,25 @@
+$ORIGIN .
+$TTL 43200      ; 12 hours
+sirket.local            IN SOA  fedora.sirket.local.sirket.local. info.sirket.local. (
+                                1005       ; serial
+                                3600       ; refresh (1 hour)
+                                1800       ; retry (30 minutes)
+                                259200     ; expire (3 days)
+                                21600      ; minimum (6 hours)
+                                )
+                        NS      ns1.sirket.local.
+$ORIGIN sirket.local.
+$TTL 300        ; 5 minutes
+DESKTOP-VN7AMBD         A       172.16.1.159
+                        DHCID   ( AAEBRUter7BNu7SU93PCk+nEIkRkAHHjN8Dxn9ohqKyj
+                                9Es= ) ; 1 1 32
+$TTL 43200      ; 12 hours
+fedora                  A       172.16.1.20
+ns1                     A       172.16.1.20
+$TTL 300        ; 5 minutes
+windows                 A       172.16.1.155
+                        DHCID   ( AAEBQv6IQG0exMMp1J2NiDl8UQbHljHq/0oKMD1TBhrn
+                                Ir0= ) ; 1 1 32
+$TTL 43200      ; 12 hours
+www                     CNAME   fedora
+
