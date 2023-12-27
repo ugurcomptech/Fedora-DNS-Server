@@ -346,15 +346,65 @@ Windows makinamıza gelip sorgu atıyoruz:
 İşlemimiz başarıyla tamamlanmıştır
 
 
+## DDNS
+
+DDNS, dinamik IP adresleriyle ilişkilendirilmiş alan adlarını güncellemek için kullanılan bir sistemdir. Internet servis sağlayıcıları genellikle abonelere dinamik IP adresleri atar, bu da IP adreslerinin zamanla değişebileceği anlamına gelir. DDNS, bu değişen IP adreslerini yöneterek bir alan adını güncel tutar. Bu sayede, kullanıcılar ev ağlarına veya küçük işletme ağlarına dinamik IP adresleri yerine sabit bir alan adı üzerinden erişebilirler. Bu özellik, uzaktan erişim gerektiren senaryolarda yaygın olarak kullanılır.
 
 
+Terminale gelip aşağıdaki komutu yazarak `key` oluşturuyoruz:
+
+```
+[root@fedoraserver /]# [root@fedoraserver /]# rndc-confgen -ab 512
+wrote key file "/etc/rndc.key"
+```
+
+Dosyaımızı açıp içini açtığımızda `key` geldiğini görüyoruz. Algoritma olarak `SHA256` kullanılmış
+
+```
+key "rndc-key" {
+        algorithm hmac-sha256;
+        secret "9IIRaGTKvAsfrjPhV3Li7iGfNLiYbE5HgJJlht7Wl8KxXJCWjf98f7AJ7GtqzpkuoRpPZu+pqxSlvdhfr3AIqA==";
+};
+```
+
+Şimdi forward ve reverse zone yaptığımız dosyaları symbolic link kullanacağız:
+
+```
+[root@fedoraserver named]# ln -s /var/named/zones/forward-sirket.local forward-sirket.local
+[root@fedoraserver named]# ln -s /var/named/zones/reverse-sirket.local reverse-sirket.local
+```
+
+Yukarıda yapmış olduğumuz işlem /var/named/ dosya yoluna /var/named/reverse-sirket.local ve /var/named/forward-sirket.local dosyasını symbolic link yaptık.
 
 
+Named'in reverse ve forward dosyalarına erişim izni var fakat /var/named/ dizinine izni yok. 
+
+Gerekli izinleri vermek için `chown named: /var/named/zones` kodunu yazabilirsiniz.
 
 
+```
+[root@fedoraserver named]# chown named: /var/named/zones
+[root@fedoraserver named]# ls -l /var/named/
+total 764
+drwxrwx---. 2 named named     23 Dec 25 12:29 data
+drwxrwx---. 2 named named     60 Dec 27 17:13 dynamic
+lrwxrwxrwx. 1 root  root      37 Dec 27 17:54 forward-sirket.local -> /var/named/zones/forward-sirket.local
+drwxr-xr-x. 2 named named   4096 Dec 25 13:25 log
+-rw-r-----. 1 root  named   3312 Nov 16 03:00 named.ca
+-rw-r-----. 1 root  named      0 Nov 16 03:00 named.ca.rpmsave
+-rw-r-----. 1 root  named    152 Nov 16 03:00 named.empty
+-rw-r-----. 1 root  named      0 Nov 16 03:00 named.empty.rpmsave
+-rw-r-----. 1 root  named    152 Nov 16 03:00 named.localhost
+-rw-r-----. 1 root  named      0 Nov 16 03:00 named.localhost.rpmsave
+-rw-r-----. 1 root  named    168 Nov 16 03:00 named.loopback
+-rw-r-----. 1 root  named      0 Nov 16 03:00 named.loopback.rpmsave
+-rw-r--r--. 1 named named 757514 Dec 27 17:36 named.run
+lrwxrwxrwx. 1 root  root      37 Dec 27 17:54 reverse-sirket.local -> /var/named/zones/reverse-sirket.local
+drwxrwx---. 2 named named      6 Nov 16 03:00 slaves
+drwxr-xr-x. 2 named named    103 Dec 26 01:03 zones
+```
 
-
-
+Key ve link hazırlıklarımız bitti şimdi devam edelim.
 
 
 
