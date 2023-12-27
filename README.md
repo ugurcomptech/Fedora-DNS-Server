@@ -542,6 +542,41 @@ Servera dönüp tekrardan `rndc sync -clean` komutunu yazınız ve ardından `na
 
 
 
+## Root Hits Güncelleme ve Forwarders Belirleme
+
+
+
+`nano /var/named/named.ca` DNS sunucusunun kök DNS sunucularının bilgilerini içeren bir dosyadır. Burayı güncelleyeceğiz.
+
+Terminale aşağıdaki komutu giriniz:
+
+```
+wget ftp://ftp.rs.internic.net/domain/db.cache -O /var/named/named.ca && rndc reload
+```
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/6b854350-ccca-4d64-92f2-28ca493485e8)
+
+Güncelleme tamamlandı içerisini açıp kontrol edebilirsiniz.
+
+
+Şimdi forwarders kısmını güncelleyelim. Terminalden `nano /etc/named.conf` açınız ve options kısmına aşağıdaki kodu giriniz:
+
+```
+        forwarders {
+                1.1.1.1;
+                8.8.8.8;
+        };
+```
+
+Eğer DNS'lerimiz çalışmaz ise gelip buradaki adreslere soracak, bunlarda çalışmaz veya bulamaz ise diğer DNS'lerin yaptığı gibi başka kök DNS'lere soracaktır.
+
+
+DNS Server yapılandırmamız bu kadardı, okuduğunuz için teşekkürler.
+
+
+
+
+
 
 
 
