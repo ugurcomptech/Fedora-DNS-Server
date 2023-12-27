@@ -314,6 +314,49 @@ DNS kaydını çözdüğünü görüyoruz.
 
 
 
+## Domain Suffix Tanımı
+
+DHCP serverdan `nano /etc/dhcp/dhcpd.conf` dosya yoluna giderek gerekli yapılandırmaları ekleyelim:
+
+
+```
+subnet 172.16.1.0 netmask 255.255.255.0 {
+    range 172.16.1.150 172.16.1.200;
+    option routers 172.16.1.253;
+    option domain-name-servers 172.16.1.20;
+    option domain-search       "sirket.local"; # Arama sorgusu için domain tanımlaması
+    option domain-name         "sirket.local"; # İstemcilere atanacak olan domain adı tanımlaması
+
+}
+```
+
+
+Servisi `systemctl restart dhcpd` komutuyla yeniden başlatalım.
+
+
+
+Windows makinamıza gelip sorgu atıyoruz:
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/5a0a3c03-180f-403a-94ca-af655efad195)
+
+
+![image](https://github.com/ugurcomptech/Fedora-DNS-Server/assets/133202238/88480144-6327-4e26-888e-53f0d9828356)
+
+
+İşlemimiz başarıyla tamamlanmıştır
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
