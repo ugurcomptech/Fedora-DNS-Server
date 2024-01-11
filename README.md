@@ -269,10 +269,10 @@ named-checkzone sirket.local /var/named/zones/forward-sirket.local
 Şimdi Reverse zone'nin dosyasına gerekli yapılandırmaları yapalım:
 
 ```
-$ORIGIN 1.16.172.in-addr-arpa.
+$ORIGIN 1.16.172.in-addr.arpa.
 $TTL 12h
 
-@               IN              SOA     fedora.sirket.local     info.sirket.local. (
+@               IN              SOA     fedora.sirket.local.     info.sirket.local. (
                                         1000                    ;Serial
                                         1h                      ;Refresh
                                         30m                     ;Retry
