@@ -313,6 +313,8 @@ Windows Makinamızda  `nslookup fedora.sirket.local` komutunu çalıştırıyoru
 DNS kaydını çözdüğünü görüyoruz.
 
 
+**Not:** *Gerçek seneryolarda Reverse DNS kaydını sadece IP sahibi girebilir. DNS sunucunuzda Reverse DNS girilmesini istiyor iseniz ISP firmanız ile konu hakkında görüşmeniz gerekebilir.*
+
 
 ## Domain Suffix Tanımı
 
